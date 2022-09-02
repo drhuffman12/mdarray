@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+crystal spec -Dpreview_mt main.cr --release --no-debug --time --no-color spec_bench

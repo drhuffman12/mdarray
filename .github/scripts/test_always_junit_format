@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+crystal spec --junit_output=./test-results --no-debug --time --error-trace --verbose # --no-color

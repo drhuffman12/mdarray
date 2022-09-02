@@ -25,7 +25,7 @@ jobs:
       run: shards install --ignore-crystal-version && shards update --ignore-crystal-version
 
     - name: Show repo version
-      run: scripts/version_info
+      run: .github/scripts/version_info
 
     - name: Run static code analysis
       # run: bin/ameba --no-color
@@ -33,11 +33,11 @@ jobs:
 
       # run: crystal spec
     - name: Run tests
-      run: scripts/test_always
+      run: .github/scripts/test_always
 
       # run: crystal spec in junit format
     - name: Run tests (w/ junit format)
-      run: scripts/test_always_junit_format
+      run: .github/scripts/test_always_junit_format
       if: always() # always run even if the previous step fails
 
       # publish: spec results in junit format
