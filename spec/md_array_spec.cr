@@ -23,7 +23,7 @@ Spectator.describe MdArray do
       it "seeds" do
           expect(mdarray.cells).to eq(cells_expected)
       end
-  
+
       it "cells" do
         expect(mdarray.cells).to eq(cells_expected)
       end
@@ -32,7 +32,7 @@ Spectator.describe MdArray do
         # expect(mdarray.qty_cells).to eq(qty_cells_expected)
       end
     end
-    
+
     context "initializes with non-defaults" do
       context "with dims of [2,3] and seeds given of 3.0" do
         let(dims_given) { [2,3] }
@@ -50,28 +50,28 @@ Spectator.describe MdArray do
         it "qty_cells" do
           expect(mdarray.qty_cells).to eq(qty_cells_expected)
         end
-  
+
         it "dims" do
           expect(mdarray.dims).to eq(dims_expected)
         end
-  
+
         it "seeds" do
           expect(mdarray.seeds).to eq(seeds_expected)
         end
-  
+
         it "cells" do
           expect(mdarray.seeds).to eq(seeds_expected)
         end
-  
+
         it "cells" do
           expect(mdarray.cells).to eq(cells_expected)
         end
-  
+
         pending "seeds_block" do
           # expect(mdarray.qty_cells).to eq(qty_cells_expected)
         end
       end
-      
+
       context "with dims of [1,1]" do
         let(dims_given) { [3,4,5] }
         let(seeds_given) { [0.125] }
@@ -104,19 +104,19 @@ Spectator.describe MdArray do
         it "qty_cells" do
           expect(mdarray.qty_cells).to eq(qty_cells_expected)
         end
-  
+
         it "dims" do
           expect(mdarray.dims).to eq(dims_expected)
         end
-  
+
         it "seeds" do
           expect(mdarray.seeds).to eq(seeds_expected)
         end
-  
+
         it "cells" do
           expect(mdarray.cells).to eq(cells_expected)
         end
-  
+
         pending "seeds_block" do
           # expect(mdarray.qty_cells).to eq(qty_cells_expected)
         end

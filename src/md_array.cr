@@ -7,9 +7,9 @@ class MdArray
   property cells # : StaticArray
 
   def initialize(@dims : Array(Int32) = [1,1], @seeds = [0.0])
-    prod = 1
+    # prod = 1
     @qty_cells = dims.product(1).to_i32
-    
+
     # p! @qty_cells
     # p! @qty_cells.class
 
@@ -18,7 +18,7 @@ class MdArray
   end
 
   def initialize(@dims : Array(Int32) = [1,1], &seeds_block : Int32 -> T)
-    prod = 1
+    # prod = 1
     @qty_cells = dims.product(1).to_i32
     # @qty_cells = qty.to_i32
     # p! @qty_cells
@@ -35,7 +35,7 @@ class MdArray
     #   array.to_unsafe[i] = yield i
     # end
     # array
-    
+
   end
 
 end
