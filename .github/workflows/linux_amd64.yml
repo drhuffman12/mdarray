@@ -1,0 +1,55 @@
+name: Crystal CI Ubuntu
+
+on:
+  push:
+    branches:   
+      - '*'
+      #  [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    container:
+      image: crystallang/crystal:nightly
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Show Crystal version
+      run: crystal -v
+
+    - name: Install dependencies
+      # run: shards install && shards update
+      run: shards install --ignore-crystal-version && shards update --ignore-crystal-version
+
+    - name: Show repo version
+      run: scripts/version_info
+
+    - name: Run static code analysis
+      # run: bin/ameba --no-color
+      run: crystal bin/ameba.cr # --no-color
+
+      # run: crystal spec
+    - name: Run tests
+      run: scripts/test_always
+
+      # run: crystal spec in junit format
+    - name: Run tests (w/ junit format)
+      run: scripts/test_always_junit_format
+      if: always() # always run even if the previous step fails
+
+      # publish: spec results in junit format
+    - name: Publish Test Report
+      if: always() # always run even if the previous step fails
+      uses: mikepenz/action-junit-report@v3
+      with:
+        report_paths: '**/test-results/output.xml'
+
+    # - name: Archive Test Results
+    #   if: always()
+    #   uses: actions/upload-artifact@v1
+    #   with:
+    #     name: test-results
+    #     path: app/build
