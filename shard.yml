@@ -4,6 +4,25 @@ version: 0.1.0
 authors:
   - Daniel Huffman <drhuffman12@gmail.com>
 
-crystal: 1.5.0
+# crystal: 1.5.0
 
 license: MIT
+
+development_dependencies:
+
+  ameba:
+    github: crystal-ameba/ameba
+
+  ## Un-comment/edit after Crystal 0.36.0 or 1.0 compatible:
+  # icr:
+  #   github: crystal-community/icr
+  #   branch: master
+
+  spectator:
+    gitlab: arctic-fox/spectator
+    branch: master
+    
+  faker:
+    github: askn/faker
+    # github: osacar/faker
+    # version: "0.6.0"

@@ -1,2 +1,4 @@
-require "spec"
-require "../src/mdarray"
+# require "spec"
+# require "../src/mdarray"
+require "../src/*"
+require "spectator"
