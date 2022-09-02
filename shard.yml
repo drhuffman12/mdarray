@@ -1,0 +1,9 @@
+name: mdarray
+version: 0.1.0
+
+authors:
+  - Daniel Huffman <drhuffman12@gmail.com>
+
+crystal: 1.5.0
+
+license: MIT
