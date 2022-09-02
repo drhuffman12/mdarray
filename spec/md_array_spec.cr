@@ -28,7 +28,7 @@ Spectator.describe MdArray do
         expect(mdarray.cells).to eq(cells_expected)
       end
 
-      pending "seeds_block" do
+      skip "seeds_block" do
         # expect(mdarray.qty_cells).to eq(qty_cells_expected)
       end
     end
@@ -67,7 +67,7 @@ Spectator.describe MdArray do
           expect(mdarray.cells).to eq(cells_expected)
         end
 
-        pending "seeds_block" do
+        skip "seeds_block" do
           # expect(mdarray.qty_cells).to eq(qty_cells_expected)
         end
       end
@@ -117,7 +117,7 @@ Spectator.describe MdArray do
           expect(mdarray.cells).to eq(cells_expected)
         end
 
-        pending "seeds_block" do
+        skip "seeds_block" do
           # expect(mdarray.qty_cells).to eq(qty_cells_expected)
         end
       end
