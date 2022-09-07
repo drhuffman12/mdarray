@@ -5,19 +5,24 @@ class MdArray
 
   getter qty_cells : Int32 # = 0_u64
   getter dims : Array(Int32) # = [1,1]
+  getter dim_factors : Array(Int32) # = [1,1]
   getter seeds : Array(Float64) # = 0_f64
   property cells # : StaticArray
 
   def initialize(@dims : Array(Int32) = [1,1], @seeds = [0.0])
     @qty_cells = dims.product(1).to_i32
+    @dim_factors = [1] # fake value for initial seed for compiler sake
+    @dim_factors = recalc_dim_factors
     @cells = Array(Float64).new(@qty_cells) { |i| @seeds[i % @seeds.size] }
   end
 
-  def initialize(@dims : Array(Int32) = [1,1], &seeds_block : Int32 -> T)
+  def initialize(@dims : Array(Int32) = [1,1], &seeds_block)
     @qty_cells = dims.product(1).to_i32
-    @seeds = Array(Float64).new(@qty_cells, 0.0)
+    @dim_factors = [1] # fake value for initial seed for compiler sake
+    @dim_factors = recalc_dim_factors
+    @seeds = Array(Float64).new(@qty_cells, seeds_block)
     @cells = Array(Float64).new(@qty_cells) do |i|
-      value = seeds_block.call(i)
+      value = seeds_block.call(i).to_f64
       @seeds << value
       value
     end
@@ -28,21 +33,21 @@ class MdArray
     # raise OrdinateError.new("Cell count mis-match") unless ordinates.product(1).to_i32 == @qty_cells
   end
 
+  def recalc_dim_factors
+    j = 1
+    x = @dims[0..-2].map_with_index{|b,i| k = j*b; j = k; k }
+    @dim_factors = [1] + x
+  end
+
   def get_cell_index(ordinates : Array(Int32))
     check_ordinates(ordinates)
-
-    p! [dims, ordinates]
-    
-    cell_index = ordinates.first
-    factor_index = 1 # dims.first
-    p! [factor_index, cell_index]
-    dims[1..-2].map_with_index do |dim, i|
-      factor_index = factor_index * dims[i-1]
-      cell_index += factor_index * ordinates[i]
-
-      p! [factor_index, cell_index, dim, i]
-    end
-    cell_index
+    dims.map_with_index do |dim, i|
+      v = ordinates[i]
+      if i >= 0
+        v = @dim_factors[i-1] * v
+      end
+      v
+    end.sum
   end
 
   def get_cell(ordinates : Array(Int32))
