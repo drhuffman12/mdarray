@@ -41,7 +41,7 @@ class MdArray
 
   def get_cell_index(ordinates : Array(Int32))
     check_ordinates(ordinates)
-    dims.map_with_index do |dim, i|
+    dims.map_with_index do |_dim, i|
       v = ordinates[i]
       if i >= 0
         v = @dim_factors[i - 1] * v
