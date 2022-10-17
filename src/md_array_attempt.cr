@@ -1,3 +1,4 @@
+# See: https://forum.crystal-lang.org/t/how-to-create-a-non-static-nested-array-with-a-variable-nested-size/5017/2
 class MdArray(U)
   def initialize(@array_flattened : Array(U))
   end
