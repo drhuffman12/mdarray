@@ -1,314 +1,190 @@
 require "./spec_helper"
 
 Spectator.describe MdArray do
-  # example data set 1
-  let(mdarray1) { MdArray.new }
-  let(qty_cells_expected1) { 1 }
-  let(dims_expected1) { [1, 1] }
-  let(dim_factors1) { [1, 1] }
-  let(seeds_expected1) { [[0.0]] }
-  let(cells_expected1) {
-    [
-      [0.0],
-    ].flatten
-  }
+  describe "MdArrayF64" do
+    # before(:all) do
+    #   MdAF64 = MdArrayF64
+    # end
 
-  # example data set 2
-  let(dims_given2) { [2, 3] }
-  let(dim_factors2) { [1, 2] }
-  let(seeds_given2) { [1.0, 2.0, 3.0] }
-  let(mdarray2) { MdArray.new(dims: dims_given2, seeds: seeds_given2) }
-  let(qty_cells_expected2) { 6 }
-  let(dims_expected2) { dims_given2 }
-  let(seeds_expected2) { seeds_given2 }
-  let(cells_expected2) {
-    [
-      [1.0, 2.0],
-      [3.0, 1.0],
-      [2.0, 3.0],
-    ].flatten
-  }
+    # before(:each) do
+    # end
 
-  # example data set 3
-  let(dims_given3) { [3, 4, 5] }
-  let(dim_factors3) { [1, 3, 12] }
-  let(seeds_given3) { [0.0, 0.1, 0.2, 0.3, 0.4] }
-  let(mdarray3) { MdArray.new(dims: dims_given3, seeds: seeds_given3) }
-  let(qty_cells_expected3) { 60 }
-  let(dims_expected3) { dims_given3 }
-  let(seeds_expected3) { seeds_given3 }
-  let(cells_expected3) {
-    # x0..x2
-    [
-      # y0..y3
-      [
-        # z0..z4
-        [0.0, 0.1, 0.2, 0.3, 0.4],
-        # z0..z4
-        [0.0, 0.1, 0.2, 0.3, 0.4],
-        # z0..z4
-        [0.0, 0.1, 0.2, 0.3, 0.4],
-        # z0..z4
-        [0.0, 0.1, 0.2, 0.3, 0.4],
-      ],
-      # y0..y3
-      [
-        # z0..z4
-        [0.0, 0.1, 0.2, 0.3, 0.4],
-        # z0..z4
-        [0.0, 0.1, 0.2, 0.3, 0.4],
-        # z0..z4
-        [0.0, 0.1, 0.2, 0.3, 0.4],
-        # z0..z4
-        [0.0, 0.1, 0.2, 0.3, 0.4],
-      ],
-      # y0..y3
-      [
-        # z0..z4
-        [0.0, 0.1, 0.2, 0.3, 0.4],
-        # z0..z4
-        [0.0, 0.1, 0.2, 0.3, 0.4],
-        # z0..z4
-        [0.0, 0.1, 0.2, 0.3, 0.4],
-        # z0..z4
-        [0.0, 0.1, 0.2, 0.3, 0.4],
-      ],
-    ].flatten
-  }
+    context "when given a small MdArray params" do
+      let(mdarray) { MdArrayF64.new(dims_expected, rand_seed: false) }
+      let(dims_expected) { [1,1] }
+      let(qty_cells_expected) { 1 }
+      let(cells_expected) { [0.0] }
+      let(mda_inspect_expected) { [[0.0]] }
 
-  # # example data set 4
-  # let(dims_given4) { [3, 4, 5] }
-  # let(dim_factors4) { [1, 3, 12] }
-  # let(seeds_given4) { [0.0, 0.1, 0.2, 0.3, 0.4] }
-  # let(seeds_block4) {
-  #   ->(x : Int32, y : Int32, z : Int32) { x*100 + y*10 + z }
-  # }
-  # let(mdarray4) {
-  #   MdArray.new(dims: dims_given4) { seeds_block4 }
-  # }
-  # let(qty_cells_expected3) { 60 }
-  # let(dims_expected4) { dims_given4 }
-  # let(seeds_expected4) { seeds_given4 }
-  # let(cells_expected4) {
-  #   # x0..x2
-  #   [
-  #     # y0..y3
-  #     [
-  #       # z0..z4
-  #       [0.0, 0.1, 0.2, 0.3, 0.4],
-  #       # z0..z4
-  #       [0.0, 0.1, 0.2, 0.3, 0.4],
-  #       # z0..z4
-  #       [0.0, 0.1, 0.2, 0.3, 0.4],
-  #       # z0..z4
-  #       [0.0, 0.1, 0.2, 0.3, 0.4],
-  #     ],
-  #     # y0..y3
-  #     [
-  #       # z0..z4
-  #       [0.0, 0.1, 0.2, 0.3, 0.4],
-  #       # z0..z4
-  #       [0.0, 0.1, 0.2, 0.3, 0.4],
-  #       # z0..z4
-  #       [0.0, 0.1, 0.2, 0.3, 0.4],
-  #       # z0..z4
-  #       [0.0, 0.1, 0.2, 0.3, 0.4],
-  #     ],
-  #     # y0..y3
-  #     [
-  #       # z0..z4
-  #       [0.0, 0.1, 0.2, 0.3, 0.4],
-  #       # z0..z4
-  #       [0.0, 0.1, 0.2, 0.3, 0.4],
-  #       # z0..z4
-  #       [0.0, 0.1, 0.2, 0.3, 0.4],
-  #       # z0..z4
-  #       [0.0, 0.1, 0.2, 0.3, 0.4],
-  #     ],
-  #   ].flatten
-  # }
-
-  describe "initialize" do
-    context "initializes with defaults" do
-      it "qty_cells" do
-        expect(mdarray1.qty_cells).to eq(qty_cells_expected1)
+      describe "DEBUG" do
+        it "DEBUG mdarray" do
+          p! mdarray
+        end
       end
 
-      it "dims" do
-        expect(mdarray1.dims).to eq(dims_expected1)
+      describe "#initialize" do
+        context "sets the instance variable as expected for" do
+          it "dims" do
+            expect(mdarray.dims).to eq(dims_expected)
+          end
+
+          it "qty_cells" do
+            expect(mdarray.qty_cells).to eq(qty_cells_expected)
+          end
+
+          it "cells" do
+            expect(mdarray.cells).to eq(cells_expected)
+          end
+        end
       end
 
-      it "dim_factors" do
-        expect(mdarray1.dim_factors).to eq(dim_factors1)
+      describe "inspect" do
+        it "returns" do
+          expect(mdarray.mda_inspect).to eq(mda_inspect_expected)
+        end
       end
 
-      it "seeds" do
-        expect(mdarray1.cells).to eq(cells_expected1)
+      describe "validate_ordinates" do
+        let(ords_dim_ok) { [0,0] }
+        let(ords_dim_mismatch) { [1,1,1] }
+        let(ords_oob_mismatch) { [2,3] }
+        
+        context "returns true when given" do
+          context "ords_dim_ok" do
+            it "returns" do
+              expect(mdarray.errors).to eq(MdArrayF64::Errors.new)
+              expect(mdarray.valid?).to eq(true)
+              checks = mdarray.validate_ordinates(ords_dim_ok)
+              expect(mdarray.errors).to eq(MdArrayF64::Errors.new)
+              expect(mdarray.valid?).to eq(true)
+              expect(mdarray.errors).to be_empty
+              expect(checks).to be_empty
+            end
+          end
+        end
+
+        context "returns false when given" do
+          context "dim_mismatch" do
+            let(error_key_expected) { "ordinates.invalid.dim_mismatch" }
+
+            it "returns" do
+              # expect(mdarray.validate_ordinates(ords_dim_mismatch)).to raise_error(MdArrayF64::OrdinateDimMismatch)
+
+              expect(mdarray.errors).to eq(MdArrayF64::Errors.new)
+              expect(mdarray.valid?).to eq(true)
+              checks = mdarray.validate_ordinates(ords_dim_mismatch)
+              # expect(mdarray.errors).to eq(MdArrayF64::Errors.new)
+              expect(mdarray.errors).to have_key(error_key_expected)
+              expect(mdarray.valid?).to eq(false)
+              expect(mdarray.errors).not_to be_empty
+              expect(checks).not_to be_empty
+            end
+          end
+
+          context "oob_mismatch" do
+            let(error_key_expected) { "ordinates.invalid.oob" }
+            
+            it "returns" do
+              # expect(mdarray.validate_ordinates(ords_oob_mismatch)).to raise_error(MdArrayF64::OrdinateOutOfBounds)
+
+              expect(mdarray.errors).to eq(MdArrayF64::Errors.new)
+              expect(mdarray.valid?).to eq(true)
+              checks = mdarray.validate_ordinates(ords_oob_mismatch)
+              # expect(mdarray.errors).to eq(MdArrayF64::Errors.new)
+              expect(mdarray.errors).to have_key(error_key_expected)
+              expect(mdarray.valid?).to eq(false)
+              expect(mdarray.errors).not_to be_empty
+              expect(checks).not_to be_empty
+            end
+          end
+        end
       end
 
-      it "cells" do
-        expect(mdarray1.cells).to eq(cells_expected1)
-      end
+      describe "at" do
+        describe "when given an in-bounds ordinate" do
+          let(ord_in_bounds) { [0,0] }
+          let(value_expected) { 0.0 }
 
-      skip "seeds_block" do
-        # expect(mdarray1.qty_cells).to eq(qty_cells_expected1)
+          it "returns" do
+            expect(mdarray.at(ord_in_bounds)).to eq(value_expected)
+          end
+        end
+
+        describe "when given an out-of-bounds ordinate" do
+          let(ord_out_of_bounds) { [rand(2)*2-1,rand(2)*2-1] }
+          let(value_expected) { [0.0] }
+
+          it "returns" do
+            expect{
+              expect(mdarray.at(ord_out_of_bounds))
+          }.to raise_error(MdArrayF64::OrdinateError)
+          end
+        end
       end
     end
 
-    context "initializes with non-defaults" do
-      context "with dims of [2,3] and seeds given of 3.0" do
-        it "qty_cells" do
-          expect(mdarray2.qty_cells).to eq(qty_cells_expected2)
-        end
+    context "when given a medium MdArray params" do
+      let(dims_expected) { [2,3] }
+      let(mdarray) { MdArrayF64.new(dims_expected, rand_seed: false) }
+      let(qty_cells_expected) { 6 }
+      let(cells_expected) { [0.0, 0.0, 0.0, 0.0, 0.0, 0.0] }
+      let(mda_inspect_expected) { [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]] }
 
-        it "dims" do
-          expect(mdarray2.dims).to eq(dims_expected2)
-        end
+      context "#initialize" do
+        context "sets the instance variable as expected for" do
+          it "dims" do
+            expect(mdarray.dims).to eq(dims_expected)
+          end
 
-        it "dim_factors" do
-          expect(mdarray2.dim_factors).to eq(dim_factors2)
-        end
+          it "qty_cells" do
+            expect(mdarray.qty_cells).to eq(qty_cells_expected)
+          end
 
-        it "seeds" do
-          expect(mdarray2.seeds).to eq(seeds_expected2)
-        end
-
-        it "cells" do
-          expect(mdarray2.seeds).to eq(seeds_expected2)
-        end
-
-        it "cells" do
-          expect(mdarray2.cells).to eq(cells_expected2)
-        end
-
-        skip "seeds_block" do
-          # expect(mdarray2.qty_cells).to eq(qty_cells_expected2)
-        end
-      end
-
-      context "with dims of [1,1]" do
-        it "qty_cells" do
-          expect(mdarray3.qty_cells).to eq(qty_cells_expected3)
-        end
-
-        it "dims" do
-          expect(mdarray3.dims).to eq(dims_expected3)
-        end
-
-        it "dim_factors" do
-          expect(mdarray3.dim_factors).to eq(dim_factors3)
-        end
-
-        it "seeds" do
-          expect(mdarray3.seeds).to eq(seeds_expected3)
-        end
-
-        it "cells" do
-          expect(mdarray3.cells).to eq(cells_expected3)
-        end
-
-        skip "seeds_block" do
-          # expect(mdarray3.qty_cells).to eq(qty_cells_expected3)
-        end
-      end
-
-      context "with dims of [2,3,4] and seeds given of proc" do
-        it "qty_cells" do
-          expect(mdarray3.qty_cells).to eq(qty_cells_expected3)
-        end
-
-        it "dims" do
-          expect(mdarray3.dims).to eq(dims_expected3)
-        end
-
-        it "dim_factors" do
-          expect(mdarray3.dim_factors).to eq(dim_factors3)
-        end
-
-        it "seeds" do
-          expect(mdarray3.seeds).to eq(seeds_expected3)
-        end
-
-        it "cells" do
-          expect(mdarray3.seeds).to eq(seeds_expected3)
-        end
-
-        it "cells" do
-          expect(mdarray3.cells).to eq(cells_expected3)
-        end
-
-        skip "seeds_block" do
-          # expect(mdarray3.qty_cells).to eq(qty_cells_expected3)
+          it "cells" do
+            expect(mdarray.cells).to eq(cells_expected)
+          end
         end
       end
     end
-  end
 
-  describe "get_cell_index" do
-    context "using cells_expected2" do
-      let(cells_expected) { cells_expected2 }
-      context "[0,0]" do
-        let(ordinates) { [0, 0] }
-        let(expected_value) { 0 }
+    context "when given a bigger MdArray params" do
+      let(dims_expected) { [4,3,2] }
+      let(mdarray) { MdArrayF64.new(dims_expected, rand_seed: false) }
+      # let(mdarray) { MdArrayF64.new(dims_expected, rand_seed: true) }
+      let(qty_cells_expected) { 24 }
+      # [[[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]], [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]], [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]], [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]]]
+      let(cells_expected) {
+        [
+          0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+          0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+          0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+          0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+        ]
+      }
+      let(mda_inspect_expected) { [[0.0]] }
 
-        it "returnes expected flattened ordinate" do
-          expect(mdarray2.get_cell_index(ordinates)).to eq(expected_value)
+      describe "DEBUG" do
+        it "DEBUG mdarray" do
+          p! mdarray
         end
       end
 
-      context "[0,1]" do
-        let(ordinates) { [0, 1] }
-        let(expected_value) { 1 }
+      context "#initialize" do
+        context "sets the instance variable as expected for" do
+          it "dims" do
+            expect(mdarray.dims).to eq(dims_expected)
+          end
 
-        it "returnes expected flattened ordinate" do
-          expect(mdarray2.get_cell_index(ordinates)).to eq(expected_value)
-        end
-      end
+          it "qty_cells" do
+            expect(mdarray.qty_cells).to eq(qty_cells_expected)
+          end
 
-      context "[1,0]" do
-        let(ordinates) { [1, 0] }
-        let(expected_value) { 2 }
-
-        it "returnes expected flattened ordinate" do
-          expect(mdarray2.get_cell_index(ordinates)).to eq(expected_value)
-        end
-      end
-
-      context "[1,1]" do
-        let(ordinates) { [1, 1] }
-        let(expected_value) { 3 }
-
-        it "returnes expected flattened ordinate" do
-          expect(mdarray2.get_cell_index(ordinates)).to eq(expected_value)
-        end
-      end
-
-      context "[2,0]" do
-        let(ordinates) { [2, 0] }
-        let(expected_value) { 4 }
-
-        it "returnes expected flattened ordinate" do
-          expect(mdarray2.get_cell_index(ordinates)).to eq(expected_value)
-        end
-      end
-
-      context "[2,0]" do
-        let(ordinates) { [2, 0] }
-        let(expected_value) { 4 }
-
-        it "returnes expected flattened ordinate" do
-          expect(mdarray2.get_cell_index(ordinates)).to eq(expected_value)
-        end
-      end
-
-      context "[2,1]" do
-        let(ordinates) { [2, 1] }
-        let(expected_value) { 5 }
-
-        it "returnes expected flattened ordinate" do
-          expect(mdarray2.get_cell_index(ordinates)).to eq(expected_value)
+          it "cells" do
+            expect(mdarray.cells).to eq(cells_expected)
+          end
         end
       end
     end
+
   end
 end
