@@ -1,20 +1,22 @@
-require "./spec_helper"
+require "./../spec_helper"
 
 Spectator.describe MdArray do
-  describe "MdArrayF64" do
-    # before(:all) do
-    #   MdAF64 = MdArrayF64
-    # end
-
-    # before(:each) do
-    # end
-
-    context "when given a small MdArray params" do
+  describe "(medium)" do
+    context "when given a medium MdArray params" do
+      let(dims_expected) { [4,3,2] }
       let(mdarray) { MdArrayF64.new(dims_expected, rand_seed: false) }
-      let(dims_expected) { [1,1] }
-      let(qty_cells_expected) { 1 }
-      let(cells_expected) { [0.0] }
-      let(mda_inspect_expected) { [[0.0]] }
+      # let(mdarray) { MdArrayF64.new(dims_expected, rand_seed: true) }
+      let(qty_cells_expected) { 24 }
+      # [[[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]], [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]], [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]], [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]]]
+      let(cells_expected) {
+        [
+          0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+          0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+          0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+          0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+        ]
+      }
+      let(mda_inspect_expected) { "[[0.0]]" }
 
       describe "DEBUG" do
         it "DEBUG mdarray" do
@@ -22,7 +24,7 @@ Spectator.describe MdArray do
         end
       end
 
-      describe "#initialize" do
+      context "#initialize" do
         context "sets the instance variable as expected for" do
           it "dims" do
             expect(mdarray.dims).to eq(dims_expected)
@@ -38,8 +40,8 @@ Spectator.describe MdArray do
         end
       end
 
-      describe "inspect" do
-        it "returns" do
+      describe "mda_inspect" do
+        pending "returns" do
           expect(mdarray.mda_inspect).to eq(mda_inspect_expected)
         end
       end
@@ -102,19 +104,23 @@ Spectator.describe MdArray do
 
       describe "at" do
         describe "when given an in-bounds ordinate" do
-          let(ord_in_bounds) { [0,0] }
+          let(ord_in_bounds) { [rand(mdarray.dims[0]),rand(mdarray.dims[1])] }
+          # let(ord_in_bounds) { [mdarray.dims[0]-1,mdarray.dims[1]-1] }
           let(value_expected) { 0.0 }
 
           it "returns" do
+            p! [mdarray.dims, ord_in_bounds]
             expect(mdarray.at(ord_in_bounds)).to eq(value_expected)
           end
         end
 
         describe "when given an out-of-bounds ordinate" do
           let(ord_out_of_bounds) { [rand(2)*2-1,rand(2)*2-1] }
+          let(ord_out_of_bounds) { [(rand(2)*2-1)*mdarray.dims[0], (rand(2)*2-1)*mdarray.dims[0], (rand(2)*2-1)*mdarray.dims[2]] }
           let(value_expected) { [0.0] }
 
           it "returns" do
+            p! [mdarray.dims, ord_out_of_bounds]
             expect{
               expect(mdarray.at(ord_out_of_bounds))
           }.to raise_error(MdArrayF64::OrdinateError)
@@ -122,69 +128,5 @@ Spectator.describe MdArray do
         end
       end
     end
-
-    context "when given a medium MdArray params" do
-      let(dims_expected) { [2,3] }
-      let(mdarray) { MdArrayF64.new(dims_expected, rand_seed: false) }
-      let(qty_cells_expected) { 6 }
-      let(cells_expected) { [0.0, 0.0, 0.0, 0.0, 0.0, 0.0] }
-      let(mda_inspect_expected) { [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]] }
-
-      context "#initialize" do
-        context "sets the instance variable as expected for" do
-          it "dims" do
-            expect(mdarray.dims).to eq(dims_expected)
-          end
-
-          it "qty_cells" do
-            expect(mdarray.qty_cells).to eq(qty_cells_expected)
-          end
-
-          it "cells" do
-            expect(mdarray.cells).to eq(cells_expected)
-          end
-        end
-      end
-    end
-
-    context "when given a bigger MdArray params" do
-      let(dims_expected) { [4,3,2] }
-      let(mdarray) { MdArrayF64.new(dims_expected, rand_seed: false) }
-      # let(mdarray) { MdArrayF64.new(dims_expected, rand_seed: true) }
-      let(qty_cells_expected) { 24 }
-      # [[[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]], [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]], [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]], [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]]]
-      let(cells_expected) {
-        [
-          0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-          0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-          0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-          0.0, 0.0, 0.0, 0.0, 0.0, 0.0
-        ]
-      }
-      let(mda_inspect_expected) { [[0.0]] }
-
-      describe "DEBUG" do
-        it "DEBUG mdarray" do
-          p! mdarray
-        end
-      end
-
-      context "#initialize" do
-        context "sets the instance variable as expected for" do
-          it "dims" do
-            expect(mdarray.dims).to eq(dims_expected)
-          end
-
-          it "qty_cells" do
-            expect(mdarray.qty_cells).to eq(qty_cells_expected)
-          end
-
-          it "cells" do
-            expect(mdarray.cells).to eq(cells_expected)
-          end
-        end
-      end
-    end
-
   end
 end
