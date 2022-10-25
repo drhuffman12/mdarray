@@ -62,18 +62,18 @@ module MdArray
         cells[index] = v
       end
     end
-    
+
     def fix_indexes(i)
       i = i - cells.size if index_too_big(i)
       i = i + cells.size if index_too_small(i)
       fix_indexes(i) if index_too_big(i) || index_too_small(i)
       i
     end
-    
+
     def index_too_big(i)
       i >= cells.size
     end
-    
+
     def index_too_small(i)
       i < 0
     end
