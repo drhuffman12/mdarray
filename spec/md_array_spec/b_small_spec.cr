@@ -1,6 +1,6 @@
 require "./../spec_helper"
 
-Spectator.describe MdArray do
+Spectator.describe MdArray::MdArray::MdArrayF64 do
   context "when given a (small) MdArray params" do
     # All changes go here!
     let(dims_expected) { [2,3] }
@@ -43,7 +43,7 @@ Spectator.describe MdArray do
     ] }
 
     # Shouldn't have to change anything below!
-    let(mdarray) { MdArrayF64.new(dims_expected, rand_seed: false) }
+    let(mdarray) { MdArray::MdArrayF64.new(dims_expected, rand_seed: false) }
     let(ords_in_bounds) { dims_expected.map{|d| d - 1} }
 
     let(ords_dim_mismatch) {
@@ -88,10 +88,10 @@ Spectator.describe MdArray do
         context "returns true when given" do
           context "ords_in_bounds" do
             it "returns" do
-              expect(mdarray.errors).to eq(MdArrayF64::Errors.new)
+              expect(mdarray.errors).to eq(MdArray::MdArrayF64::Errors.new)
               expect(mdarray.valid_ordinates?).to eq(true)
               checks = mdarray.validate_ordinates(ords_in_bounds)
-              expect(mdarray.errors).to eq(MdArrayF64::Errors.new)
+              expect(mdarray.errors).to eq(MdArray::MdArrayF64::Errors.new)
               expect(mdarray.valid_ordinates?).to eq(true)
               expect(mdarray.errors).to be_empty
               expect(checks).to be_empty
@@ -102,7 +102,7 @@ Spectator.describe MdArray do
         context "returns false when given" do
           context "dim_mismatch" do
             it "returns" do
-              expect(mdarray.errors).to eq(MdArrayF64::Errors.new)
+              expect(mdarray.errors).to eq(MdArray::MdArrayF64::Errors.new)
               expect(mdarray.valid_ordinates?).to eq(true)
               checks = mdarray.validate_ordinates(ords_dim_mismatch)
   
@@ -117,7 +117,7 @@ Spectator.describe MdArray do
   
           context "oob_mismatch" do
             it "returns" do
-              expect(mdarray.errors).to eq(MdArrayF64::Errors.new)
+              expect(mdarray.errors).to eq(MdArray::MdArrayF64::Errors.new)
               expect(mdarray.valid_ordinates?).to eq(true)
   
               checks = mdarray.validate_ordinates(ords_oob_mismatch)
@@ -145,7 +145,7 @@ Spectator.describe MdArray do
             p! [mdarray.dims, ords_dim_mismatch]
             expect{
               mdarray.index_for(ords_dim_mismatch)
-          }.to raise_error(MdArrayF64::OrdinateError)
+          }.to raise_error(MdArray::MdArrayF64::OrdinateError)
           end
         end
   
@@ -154,7 +154,7 @@ Spectator.describe MdArray do
             p! [mdarray.dims, ords_oob_mismatch]
             expect{
               mdarray.index_for(ords_oob_mismatch)
-          }.to raise_error(MdArrayF64::OrdinateError)
+          }.to raise_error(MdArray::MdArrayF64::OrdinateError)
           end
         end
       end
@@ -173,7 +173,7 @@ Spectator.describe MdArray do
             p! [mdarray.dims, ords_oob_mismatch]
             expect{
               mdarray.at(ords_oob_mismatch)
-            }.to raise_error(MdArrayF64::OrdinateError)
+            }.to raise_error(MdArray::MdArrayF64::OrdinateError)
             expect(mdarray.errors).to have_key(error_key_oob_expected)
           end
         end
