@@ -250,6 +250,26 @@ Spectator.describe MdArray::MdArrayF64 do
           end
         end
       end
+
+      describe "set(i, v : Float64)" do
+        # TODO
+      end
+
+      describe "set(i, values : Array(Float64))" do
+        # TODO
+      end
+
+      describe "fix_indexes(i)" do
+        # TODO
+      end
+
+      describe "index_too_big(i)" do
+        # TODO
+      end
+
+      describe "index_too_small(i)" do
+        # TODO
+      end
     end
   end
 end
