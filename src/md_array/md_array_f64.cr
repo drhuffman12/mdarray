@@ -4,36 +4,38 @@ module MdArray
     alias Ordinates = Array(Int32)
 
     class OrdinateError < Exception; end
+
     class OrdinateDimMismatch < OrdinateError; end
+
     class OrdinateOutOfBounds < OrdinateError; end
 
     class Errors < Hash(String, OrdinateError); end
 
     property errors = Errors.new
 
-    getter qty_cells : Int32 = 1         # = 0_u64
-    getter dims : Array(Int32) = [1,1]
-    property cells : Array(Float64)              # : StaticArray
+    getter qty_cells : Int32 = 1 # = 0_u64
+    getter dims : Array(Int32) = [1, 1]
+    property cells : Array(Float64) # : StaticArray
     property default_value : Float64
 
     def initialize(@dims : Array(Int32) = [1, 1], @default_value = Float64.new(0), @rand_seed = true) # , @seeds = [0.0])
       @qty_cells = dims.product(1).to_i32
       @cells = Array(Float64).new(@qty_cells, @default_value)
-      @cells.map!{|v| rand} if @rand_seed
+      @cells.map! { |v| rand } if @rand_seed
     end
 
     def index_for(ordinates : Ordinates)
       validate_ordinates(ordinates)
 
       unless valid_ordinates?
-        raise OrdinateError.new("ordinates.invalid: [#{errors.map{|k,v| k[0..16] == "ordinates.invalid"}.join(", ")}]")
+        raise OrdinateError.new("ordinates.invalid: [#{errors.map { |k, v| k[0..16] == "ordinates.invalid" }.join(", ")}]")
       end
 
       # ordinates: [1,2,1] => 1 + 2*1 + 2*3*1 == 1 + 4 + 6 == 11
       factor = 1
       sum = 0
 
-      ordinates.each_with_index do |ord,i|
+      ordinates.each_with_index do |ord, i|
         sum += factor * ord
         factor = factor * dims[i]
       end
@@ -62,7 +64,7 @@ module MdArray
       if ordinates.size != dims.size
         @errors["ordinates.invalid.dim_mismatch"] = OrdinateDimMismatch.new("ordinates: #{ordinates} vs dims: #{dims}, comparing ords size vs dims size: #{ordinates.size} vs #{dims.size}")
       else
-        ord_oob_which = dims.map_with_index do |dmax,i|
+        ord_oob_which = dims.map_with_index do |dmax, i|
           case
           when ordinates[i] < 0
             -1
@@ -72,12 +74,12 @@ module MdArray
             0
           end
         end
-        ord_oob = ord_oob_which.map{|oob| oob != 0 }
+        ord_oob = ord_oob_which.map { |oob| oob != 0 }
         ord_oob_any = ord_oob.any?
-      
+
         @errors["ordinates.invalid.oob"] = OrdinateOutOfBounds.new("ord_oob_which: #{ord_oob_which}") if ord_oob_any
       end
-    
+
       @errors
     end
 

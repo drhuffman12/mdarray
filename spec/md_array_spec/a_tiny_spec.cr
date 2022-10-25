@@ -3,45 +3,44 @@ require "./../spec_helper"
 Spectator.describe MdArray::MdArrayF64 do
   context "when given a (tiny) MdArray params" do
     # All changes go here!
-    let(dims_expected) { [1,1] }
+    let(dims_expected) { [1, 1] }
     let(qty_cells_expected) { 1 }
     let(cells_expected) { [0.0] }
     let(mda_inspect_expected) { "[[0.0]]" }
-    let(ords_for_value) { [0,0] }
+    let(ords_for_value) { [0, 0] }
     let(index_expected) { 0 }
     let(value_expected_for_ords) { 0 }
 
     let(ords_at_in_order) {
-      i = 0;
-
+      i = 0
       d1is = (0..dims_expected[1] - 1).to_a.map do |d1|
         d0is = (0..dims_expected[0] - 1).to_a.map do |d0|
-          i_ords = {i => [d0,d1]}
+          i_ords = {i => [d0, d1]}
           i += 1
           i_ords
         end
       end.flatten
     }
     let(indexes_for_in_order) {
-      ords_at_in_order.map{|ords| mdarray.index_for(ords.values.first)}
+      ords_at_in_order.map { |ords| mdarray.index_for(ords.values.first) }
     }
     let(ords_expected) {
       [{0 => [0, 0]}]
     }
     let(values_at_in_order) {
-      ords_at_in_order.map{|ords| mdarray.at(ords.values.first)}
+      ords_at_in_order.map { |ords| mdarray.at(ords.values.first) }
     }
     let(values_expected) { [0.0] }
 
     # Shouldn't have to change anything below!
     let(mdarray) { MdArray::MdArrayF64.new(dims_expected, rand_seed: false) }
-    let(ords_in_bounds) { dims_expected.map{|d| d - 1} }
+    let(ords_in_bounds) { dims_expected.map { |d| d - 1 } }
 
     let(ords_dim_mismatch) {
-      dims_expected.map{|d| rand(d) } + [0]
+      dims_expected.map { |d| rand(d) } + [0]
     }
     let(ords_oob_mismatch) {
-      dims_expected.map{|d| [-1,d].sample }
+      dims_expected.map { |d| [-1, d].sample }
     }
     let(error_key_dim_mismatch_expected) { "ordinates.invalid.dim_mismatch" }
     let(error_key_oob_expected) { "ordinates.invalid.oob" }
@@ -52,29 +51,29 @@ Spectator.describe MdArray::MdArrayF64 do
           p! mdarray
         end
       end
-  
+
       describe "#initialize" do
         context "sets the instance variable as expected for" do
           it "dims" do
             expect(mdarray.dims).to eq(dims_expected)
           end
-  
+
           it "qty_cells" do
             expect(mdarray.qty_cells).to eq(qty_cells_expected)
           end
-  
+
           it "cells" do
             expect(mdarray.cells).to eq(cells_expected)
           end
         end
       end
-  
+
       # describe "mda_inspect" do
       #   skip "returns" do
       #     expect(mdarray.mda_inspect).to eq(mda_inspect_expected)
       #   end
       # end
-  
+
       describe "validate_ordinates" do
         context "returns true when given" do
           context "ords_in_bounds" do
@@ -89,30 +88,30 @@ Spectator.describe MdArray::MdArrayF64 do
             end
           end
         end
-  
+
         context "returns false when given" do
           context "dim_mismatch" do
             it "returns" do
               expect(mdarray.errors).to eq(MdArray::MdArrayF64::Errors.new)
               expect(mdarray.valid_ordinates?).to eq(true)
               checks = mdarray.validate_ordinates(ords_dim_mismatch)
-  
+
               p! mdarray.errors
-  
+
               expect(mdarray.errors).to have_key(error_key_dim_mismatch_expected)
               expect(mdarray.valid_ordinates?).to eq(false)
               expect(mdarray.errors).not_to be_empty
               expect(checks).not_to be_empty
             end
           end
-  
+
           context "oob_mismatch" do
             it "returns" do
               expect(mdarray.errors).to eq(MdArray::MdArrayF64::Errors.new)
               expect(mdarray.valid_ordinates?).to eq(true)
-  
+
               checks = mdarray.validate_ordinates(ords_oob_mismatch)
-  
+
               expect(mdarray.errors).to have_key(error_key_oob_expected)
               expect(mdarray.valid_ordinates?).to eq(false)
               expect(mdarray.errors).not_to be_empty
@@ -121,48 +120,48 @@ Spectator.describe MdArray::MdArrayF64 do
           end
         end
       end
-  
+
       describe "index_for" do
         describe "when given an in-bounds ordinate" do
           skip "returns" do
             p! [mdarray.dims, ords_in_bounds]
-  
+
             expect(mdarray.index_for(ords_in_bounds)).to eq(index_expected)
           end
         end
-  
+
         describe "when given an bad dim'd ordinate" do
           it "returns" do
             p! [mdarray.dims, ords_dim_mismatch]
-            expect{
+            expect {
               mdarray.index_for(ords_dim_mismatch)
-          }.to raise_error(MdArray::MdArrayF64::OrdinateError)
+            }.to raise_error(MdArray::MdArrayF64::OrdinateError)
           end
         end
-  
+
         describe "when given an out-of-bounds ordinate" do
           it "returns" do
             p! [mdarray.dims, ords_oob_mismatch]
-            expect{
+            expect {
               mdarray.index_for(ords_oob_mismatch)
-          }.to raise_error(MdArray::MdArrayF64::OrdinateError)
+            }.to raise_error(MdArray::MdArrayF64::OrdinateError)
           end
         end
       end
-  
+
       describe "at" do
         describe "when given an in-bounds ordinate" do
           skip "returns" do
             p! [mdarray.dims, ords_in_bounds]
-  
+
             expect(mdarray.at(ords_in_bounds)).to eq(value_expected_for_ords)
           end
         end
-  
+
         describe "when given an out-of-bounds ordinate" do
           it "returns" do
             p! [mdarray.dims, ords_oob_mismatch]
-            expect{
+            expect {
               mdarray.at(ords_oob_mismatch)
             }.to raise_error(MdArray::MdArrayF64::OrdinateError)
             expect(mdarray.errors).to have_key(error_key_oob_expected)
@@ -190,8 +189,8 @@ Spectator.describe MdArray::MdArrayF64 do
           before_all do
             puts "/nat/n"
           end
-          let(cells_expected) { 
-            (0..qty_cells_expected-1).to_a.map{|i| i.to_f64}
+          let(cells_expected) {
+            (0..qty_cells_expected - 1).to_a.map { |i| i.to_f64 }
           }
           before_each do
             p! mdarray.cells
