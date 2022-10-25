@@ -51,13 +51,31 @@ module MdArray
     end
 
     def set(i, v : Float64)
-      cells[i] = v
+      index = fix_indexes(i)
+      cells[index] = v
     end
 
     def set(i, values : Array(Float64))
       values.map_with_index do |v, di|
-        cells[i + di] = v
+        index = i + di
+        index = fix_indexes(index)
+        cells[index] = v
       end
+    end
+    
+    def fix_indexes(i)
+      i = i - cells.size if index_too_big(i)
+      i = i + cells.size if index_too_small(i)
+      fix_indexes(i) if index_too_big(i) || index_too_small(i)
+      i
+    end
+    
+    def index_too_big(i)
+      i >= cells.size
+    end
+    
+    def index_too_small(i)
+      i < 0
     end
 
     def at(ordinates : Ordinates)
