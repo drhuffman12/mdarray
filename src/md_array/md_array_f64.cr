@@ -50,6 +50,34 @@ module MdArray
       # TODO: inverse of "#index_for"
     end
 
+    def set(i, v : Float64)
+      index = fix_indexes(i)
+      cells[index] = v
+    end
+
+    def set(i, values : Array(Float64))
+      values.map_with_index do |v, di|
+        index = i + di
+        index = fix_indexes(index)
+        cells[index] = v
+      end
+    end
+
+    def fix_indexes(i)
+      i = i - cells.size if index_too_big(i)
+      i = i + cells.size if index_too_small(i)
+      fix_indexes(i) if index_too_big(i) || index_too_small(i)
+      i
+    end
+
+    def index_too_big(i)
+      i >= cells.size
+    end
+
+    def index_too_small(i)
+      i < 0
+    end
+
     def at(ordinates : Ordinates)
       index = index_for(ordinates)
       if index > cells.size - 1
