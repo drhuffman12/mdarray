@@ -13,7 +13,7 @@ Spectator.describe MdArray::MdArrayF64 do
     let(mda_inspect_expected) { "[[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]]" }
     let(ords_for_value) { [1, 2] }
     let(index_expected) { 5 }
-    let(value_expected_for_ords) { 0.0 }
+    let(value_expected_for_ords) { 5.0 }
 
     let(ords_at_in_order) {
       i = 0
@@ -207,8 +207,8 @@ Spectator.describe MdArray::MdArrayF64 do
             p! mdarray.cells
           end
           it "indexes" do
-            p! ords_expected
-            p! ords_at_in_order
+            # p! ords_expected
+            # p! ords_at_in_order
             expect(ords_at_in_order).to eq(ords_expected)
           end
           it "values" do

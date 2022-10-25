@@ -56,7 +56,7 @@ module MdArray
         msg = [
           "index > cells.size - 1; index: #{index}",
           " cells.size - 1 : #{cells.size - 1}",
-          " ordinates: #{ordinates}"
+          " ordinates: #{ordinates}",
         ].join
         raise OrdinateOutOfBounds.new(msg)
       end
@@ -69,7 +69,7 @@ module MdArray
       if ordinates.size != dims.size
         msg = [
           "ordinates: #{ordinates} vs dims: #{dims}",
-          " comparing ords size vs dims size: #{ordinates.size} vs #{dims.size}"
+          " comparing ords size vs dims size: #{ordinates.size} vs #{dims.size}",
         ].join
         @errors["ordinates.invalid.dim_mismatch"] = OrdinateDimMismatch.new(msg)
       else
@@ -84,7 +84,7 @@ module MdArray
           end
         end
         ord_oob = ord_oob_which.map { |oob| oob != 0 }
-        ord_oob_any = !ord_oob.empty?
+        ord_oob_any = ord_oob.any? # ameba:disable Performance/AnyInsteadOfEmpty
 
         @errors["ordinates.invalid.oob"] = OrdinateOutOfBounds.new("ord_oob_which: #{ord_oob_which}") if ord_oob_any
       end
