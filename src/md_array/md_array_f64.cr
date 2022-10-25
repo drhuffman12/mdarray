@@ -1,7 +1,5 @@
 module MdArray
   class MdArrayF64 # < Array(U)
-    VERSION = {{ `shards version "#{__DIR__}"`.chomp.stringify }}
-
     alias NestedArray = Array(Float64) | Array(NestedArray)
     alias Ordinates = Array(Int32)
 

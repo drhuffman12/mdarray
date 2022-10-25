@@ -1,6 +1,6 @@
 require "./../spec_helper"
 
-Spectator.describe MdArray::MdArray::MdArrayF64 do
+Spectator.describe MdArray::MdArrayF64 do
   context "when given a (tiny) MdArray params" do
     # All changes go here!
     let(dims_expected) { [1,1] }
