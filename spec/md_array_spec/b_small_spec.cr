@@ -199,7 +199,7 @@ Spectator.describe MdArray::MdArrayF64 do
             puts "/nat/n"
           end
           let(cells_expected) {
-            (0..qty_cells_expected - 1).to_a.map { |i| i.to_f64 }
+            (0..qty_cells_expected - 1).to_a.map(&.to_f64)
           }
           before_each do
             p! mdarray.cells

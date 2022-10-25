@@ -5,7 +5,7 @@ Spectator.describe MdArray::MdArrayF64 do
     # All changes go here!
     let(dims_expected) { [2, 3, 4] }
     let(qty_cells_expected) { 24 }
-    # [[[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]], [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]], [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]], [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]]]
+
     let(cells_expected) {
       [
         0.0, 0.0,
@@ -25,7 +25,14 @@ Spectator.describe MdArray::MdArrayF64 do
         0.0, 0.0,
       ]
     }
-    let(mda_inspect_expected) { "[[[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]], [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]], [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]], [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]]]" }
+    let(mda_inspect_expected) {
+      [
+        "[[[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]]",
+        " [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]]",
+        " [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]]",
+        " [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]]]"
+      ].join
+    }
     let(ords_for_value) { [1, 2, 3] }
     let(index_expected) { 18 }
     let(value_expected_for_ords) { 18.0 }
@@ -223,7 +230,7 @@ Spectator.describe MdArray::MdArrayF64 do
             puts "/nat/n"
           end
           let(cells_expected) {
-            (0..qty_cells_expected - 1).to_a.map { |i| i.to_f64 }
+            (0..qty_cells_expected - 1).to_a.map(&.to_f64)
           }
           before_each do
             p! mdarray.cells
